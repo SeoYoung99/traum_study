@@ -1,0 +1,43 @@
+td, tr, th {
+  border: 1px solid;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+body {
+  width: fit-content;
+}
+
+.coin_name {
+  display: flex;
+  align-items: center;
+}
+
+.fav_btn {
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+
+.coin_text {
+  vertical-align: middle;
+}
+
+.buttonTab {
+  display: flex;
+}
+.buttonTab button {
+  width: 50%;
+  height: 50px;
+}
+
+table {
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
+td {
+  text-align: center;
+}
+
+/*# sourceMappingURL=style.css.map */
