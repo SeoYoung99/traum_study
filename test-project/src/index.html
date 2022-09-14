@@ -10,12 +10,12 @@
 </head>
 <body>
     <div class="buttonTab">
-        <button>전체 코인보기</button>~
+        <button>전체 코인보기</button>
         <button>즐겨찾기 보기</button>
     </div>
     <Table>
         <tr>
-            <th>Coin Name</th>~
+            <th>Coin Name</th>
             <th>Price</th>
             <th>Rate</th>
             <th>Volume</th>
@@ -24,7 +24,7 @@
 
         </tbody>
         
-    <script>
+    <!-- <script>
         async function getUsers() {
             let url = 'https://api.binance.com/api/v3/ticker/24hr';
             try {
@@ -57,7 +57,7 @@
                     const coin_price = document.createElement("td");
                     const coin_rate = document.createElement("td");
                     const coin_volume = document.createElement("td");
-
+                
                     let {symbol: coinname, lastPrice: price ,priceChangePercent: rate , volume: volume} = datalist[i]
                     
                     coin_text.textContent = coinname
@@ -93,7 +93,7 @@
         getUsers()
 
         
-    </script>
+    </script> -->
     </Table>
 </body>
 </html>
