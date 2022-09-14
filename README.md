@@ -1,7 +1,6 @@
 # traum_study
 study frontend in traum info tech
 
-#test-project
 [ webpack으로 타입스크립트 빌드 ]
 
 webpack 모듈 설치
