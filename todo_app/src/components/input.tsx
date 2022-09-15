@@ -8,26 +8,30 @@ function Input( props : { addItem: (item: todoItem) => void; } ){
     let TodayDate = today.toLocaleDateString();
     let date = TodayDate;
    
+    const [key,setKey] = useState(0)
     const [inputText, setInputText] = useState(''); //input text
     const [inputDate, setInputDate] = useState(date);
-    const [item, setItem] = useState<todoItem>({title: inputText, date: inputDate, status: false}); 
+    const [item, setItem] = useState<todoItem>({key: key, title: inputText, date: inputDate, status: false}); 
     
     useEffect(()=>{
-        let inputItem: todoItem = {title: inputText, date: inputDate, status: false}
+        let inputItem: todoItem = {key: key, title: inputText, date: inputDate, status: false}
         setItem(inputItem)
-    },[inputText, inputDate])
+    },[inputText, inputDate, key])
 
     return (
         <div>
             <input value={inputText} placeholder="내용을 입력하세요" onChange={(e)=>{setInputText(e.target.value)}}/> 
             <input value={inputDate} placeholder="날짜를 입력하세요" onChange={(e)=>{setInputDate(e.target.value);}}/> 
-            
-            {inputText}
-            {inputDate}
-            
-            <button onClick={(e)=>{console.log(item); props.addItem(item); setInputDate(''); setInputText('')}}>
-                +
-        </button>
+            <button onClick={(e)=>{
+                props.addItem(item); 
+                setInputDate(date); 
+                setInputText(''); 
+                let newKey = key+1; 
+                setKey(newKey)
+                }
+            }>
+            +
+            </button>
         </div>
     )
 }
