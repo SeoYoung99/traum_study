@@ -1,11 +1,22 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import Input from './components/input';
+import Input from './input';
 import './App.css';
-import Item from './components/item';
+import Item from './item';
 
-export type todoItem = {
-  key : number;
+//Redux의 Hook 
+
+//useSelector()
+//-> 리덕스 스토어에 저장된 데이터를 추출하는 Hook입니다. 
+
+//useDispatch()
+//-> 리덕스 스토어에 설정된 action에 대한 dispatch를 연결하는 Hook입니다.
+import { useSelector } from 'react-redux';
+import { RootState } from './modules';
+import { useDispatch } from 'react-redux';
+import { deleteTodo } from './modules/todos/actions';
+
+export type todoItem = {id : number;
   title : string ;
   date : number | string ;
   status: boolean ;
@@ -13,34 +24,45 @@ export type todoItem = {
 
 function App() : React.ReactElement {
 
-  const [todoList, setTodoList] = useState<todoItem[]>([]); 
+  //const [todoList, setTodoList] = useState<todoItem[]>([]); 
 
-  function addItem( item : todoItem ){ //item 추가 함수
-    let newList = todoList.concat(item)
-    setTodoList(newList)
-  }
+  //useSelector로 store(state타입이 RootState인) 접근 
+  const reduxTodoList = useSelector((state: RootState) => state.todo.todo)
+  const dispatch = useDispatch();
+  const deleteItem = React.useCallback(
+      
+      (id: number)=> dispatch(deleteTodo({id})) ,[dispatch]
+  )
 
-  function changeList(key: number){
-    let newList = todoList.filter(item => item.key !== key)
-    setTodoList(newList)
-  }
+  // function addItem( item : todoItem ){ //item 추가 함수
+  //   let newList = todoList.concat(item)
+  //   setTodoList(newList)
+  // }
 
-  useEffect(()=>{
-    console.log(todoList)  
-  },[todoList])
+  // function changeList(key: number){
+  //   let newList = todoList.filter(item => item.key !== key)
+  //   setTodoList(newList)
+  // }
+
+  // useEffect(()=>{
+  //   console.log(todoList)  
+  // },[todoList])
 
   return (
     <div className="App">
-      <Input addItem = {addItem}/>
-      {todoList.map((val)=>
-      <div style={{display: 'flex'}}>
+      <Input/>
+      {reduxTodoList.map((val: todoItem)=>
+      <div style={{display: 'flex'}} key={val.id}>
         <Item 
-          key={val.key}
+          id={val.id}
           title = {val.title}
           date = {val.date}
           status = {val.status}
         />
-        <button onClick={()=>changeList(val.key)}>삭제</button>
+        <button onClick={(e)=> {
+          console.log(val.id)
+          deleteItem(val.id);
+          }}>삭제</button>
       </div>
       )}
     </div>
