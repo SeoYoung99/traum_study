@@ -14,7 +14,8 @@ import Item from './item';
 import { useSelector } from 'react-redux';
 import { RootState } from './modules';
 import { useDispatch } from 'react-redux';
-import { deleteTodo } from './modules/todos/actions';
+import { deleteTodo, deleteTodoThunk } from './modules/todos/actions';
+import { useAppDispatch } from '.';
 
 export type todoItem = {id : number;
   title : string ;
@@ -28,12 +29,8 @@ function App() : React.ReactElement {
 
   //useSelector로 store(state타입이 RootState인) 접근 
   const reduxTodoList = useSelector((state: RootState) => state.todo.todo)
-  const dispatch = useDispatch();
-  const deleteItem = React.useCallback(
-      
-      (id: number)=> dispatch(deleteTodo({id})) ,[dispatch]
-  )
-
+  const dispatch = useAppDispatch();
+  
   // function addItem( item : todoItem ){ //item 추가 함수
   //   let newList = todoList.concat(item)
   //   setTodoList(newList)
@@ -59,9 +56,8 @@ function App() : React.ReactElement {
           date = {val.date}
           status = {val.status}
         />
-        <button onClick={(e)=> {
-          console.log(val.id)
-          deleteItem(val.id);
+        <button onClick={()=> {
+         dispatch(deleteTodoThunk(val.id));
           }}>삭제</button>
       </div>
       )}

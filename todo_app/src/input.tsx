@@ -12,6 +12,7 @@ function Input(){
     const dispatch = useDispatch();
 
     const updateTodo = React.useCallback(
+        
         (todo: todoItem) => dispatch(addTodo({todo: todo})),[dispatch]
         //action을 감지할 때만 함수 생성, 
         //addTodo액션을 감지해서 실행
@@ -37,9 +38,9 @@ function Input(){
             <input value={inputDate} placeholder="날짜를 입력하세요" onChange={(e)=>{setInputDate(e.target.value);}}/> 
             <button onClick={(e)=>{
                 // props.addItem(item); 
+                console.log(item)
                 e.preventDefault();
                 updateTodo(item);
-                
                 setInputDate(date); 
                 setInputText(''); 
                 let newid = id+1; 
