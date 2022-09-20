@@ -1,15 +1,13 @@
 import React from 'react';
-import { configureStore } from '@reduxjs/toolkit'
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-//import actions from ''
-
 //리덕스
 //store만들기 (가장 상위 폴더에서 선해서 모든 하위 태그들이 공유 가능)
-import { createStore, applyMiddleware, AnyAction } from 'redux'; //store생성 함수
+import { configureStore } from '@reduxjs/toolkit'
+import { AnyAction } from 'redux'; //store생성 함수
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { Provider, useDispatch } from 'react-redux'; //생성된 store를 모든 태그가 공유할 수 있도록 해주는 클래스
 import rootReducer, { RootState } from './modules'

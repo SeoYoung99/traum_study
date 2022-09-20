@@ -3,7 +3,6 @@ import { todoItem } from '../../App'
 import { Action, createAction} from "typesafe-actions";
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
-import { compose } from 'redux';
 
 
 //Ation 정의 (리덕스 액션에 들어갈)
