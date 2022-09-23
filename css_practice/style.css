@@ -1,0 +1,267 @@
+div.box{
+    width: 320px;
+    padding: 10px;
+    border: 5px solid gray;
+    margin: 50px;
+}
+
+ul.launch{
+    background: rgb(135, 175, 210);
+    padding: 20px;
+}
+ul.launch li{
+    background-color: lightblue;
+    margin: 10px;
+    padding: 10px;
+    color: blueviolet;
+}
+/*최소 640px 이상부터 적용*/
+@media screen and (min-width: 640px){
+    ul.launch{
+        background: pink;
+
+    }
+    ul.launch li{
+        background-color:mediumorchid
+    }
+}
+ol.frontend{
+    background-color: antiquewhite;
+    padding: 30px;
+}
+ol.frontend li{
+    list-style-position: inside;
+    background-color:rgb(185, 128, 128);
+    list-style-position: outside;
+    padding: 10px;
+    margin: 0 40px;
+}
+
+/*테이블*/
+#table{
+    width: 100%;
+    height: 400px;
+    border-collapse: collapse;
+}
+#table th{ /*테이블 헤드*/
+    background-color: cornflowerblue;
+    color: white;
+    border: solid black;
+    padding: 15px;
+    text-align: left;
+}
+#table td{
+    border: solid;
+    padding: 10px;
+    vertical-align: bottom;
+}
+#table tr:nth-child(2n){ /*짝수번째 행에 스타일 적용*/
+    background-color: aliceblue;
+}
+#table tr:hover{ /*짝수번째 행에 스타일 적용*/
+    background-color: rgb(81, 151, 212);
+}
+
+/*의사 클래스*/
+a:link { color: blue; }          /* 방문하지 않은 링크 */
+a:visited { color: purple; }     /* 방문한 링크 */
+a:hover { background: yellow; }  /* 마우스를 올린 링크 */
+a:active { color: red; }         /* 활성화한 링크 */
+
+p:active { background: #eee; }   /* 활성화한 문단 */
+/*clac()*/
+form{
+    /* "라벨에 for를 쓰면 input태그와 명시적으로 연결되어서 라벨을 클릭해도 포커싱~" */
+    padding: 10px;
+    height: 150px;
+    width: calc(100% / 2);
+    background-color: peachpuff;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+}
+label{
+    display: inline-block;
+    /*inline요소*/
+    /*페이지 크기에 따라 비율 유지하면서 글자 크기 변경*/
+    font-size: calc(1rem + 1vw);
+}
+input{
+    /* display: inline-block; */
+    width: calc(100% - 1rem);
+    height: 30%;
+    margin-bottom: 150px;
+}
+input:focus {
+    border: 3px solid #555;
+  }
+/*after. before*/
+#before{
+    background-color: beige;
+    border: 1px solid brown;
+    /*마진과 패딩, 텍스트정렬로 구현한 중앙정렬
+    => 컨텐츠의 내용에 따라 박스의 크기가 달라지고, 고정된 넓이와 높이를 가질 수 없다.*/
+    margin: 30px 80px;
+    text-align: center;
+    padding: 50px 10px;
+}
+#before::before{
+    content: "::before사용결과     -    ";
+    color: blue;
+}
+#after{
+    height: 100px;
+    width: 300px;
+    background-color: rgb(244, 244, 194);
+    border: 1px solid brown;
+    /*FkexBox를 활용해서 중앙정렬 
+    1.display를 flex로 설정
+    2. 중심축 정렬 (justify-)
+    3. 반대축 정렬 (align-*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#after::after{
+    content: " \21E6";
+}
+#after:hover::after{
+    content: 'mouse hoverd'
+}
+
+/*블락, 인라인, 인라인블락 연습*/
+.boxH1{
+    display: inline;
+    background-color: cadetblue;
+    padding: 5px;
+}
+#display{
+    padding: 20px;
+    margin-top: 20px;
+    border: salmon 2px solid;
+}
+#display div{
+    display: inline-block;
+    height: 40px;
+    width: 180px;
+    margin-top: 20px;
+    background-color: bisque;
+    vertical-align: middle;
+}
+
+/*포지션 연습*/
+#position{
+    height: 200px;
+    border: dashed gray 2px;
+}
+#position div{
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+}
+#static{
+    display: static;
+    background-color: darksalmon;
+}
+#relative{ 
+    position: relative;
+    /*원래있어야할 자리에서*/
+    top: 20px;
+    left: 10px;
+    background-color: darkseagreen;
+}
+#absolute{
+    position: absolute;
+    /*상위 박스에서*/
+    right: 30px;
+    top: 0px;
+    background-color: darkgoldenrod;
+}
+#fixed{
+    position: fixed;
+    /*웹페이지에서*/
+    right: 200px;
+    top: 50px;
+    background-color: thistle;
+}
+#sticky{
+    position: sticky;
+    top: 30px;
+    left: 300px;
+    background-color: slategray;
+}
+
+/*오버플로우*/
+#overflow{
+    height: 100px;
+    width: 220px;
+    padding: 10px;
+    overflow: auto;
+    background-color: wheat;
+}
+
+/*기준축, 반대축 정렬*/
+#flexBox{ /*container*/
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    background-color: aliceblue;
+    /*기억해 justfy는 중심축(가로)
+        align은 반대축(세로)*/
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-between;
+}
+#flexBox div:nth-child(1){
+    width: 200px;
+    height: 80px;
+    background-color:darkslategray;
+    transform: translate(10px,10px);
+}
+#flexBox div:nth-child(2){
+    width: 100px;
+    height: 90px;
+    background-color:darkolivegreen;
+    transform: rotate(20deg);
+    transition: transform 3s;
+
+}#flexBox div:nth-child(2):hover{
+    transform: rotateY(100deg);
+}
+#flexBox div:nth-child(3){
+    width: 150px;
+    height: 50px;
+    background-color: blueviolet;
+    align-self:center;
+    flex-grow: 1;
+    transform: skewX(30deg);
+    transition: height 3s, transform 5s;
+}
+#flexBox div:nth-child(3):hover{
+    height: 200px;
+    transform: skewX(-30deg);
+}
+#flexBox div:nth-child(4){
+    width: 300px;
+    height: 80px;
+    background-color: rgb(226, 150, 43);
+}
+#flexBox div:nth-child(5){
+    width: 200px;
+    height: 120px;
+    background-color:rgb(50, 117, 185);
+    transition: transform 2s;
+}
+#flexBox div:nth-child(5):hover{
+    transform: rotate(30deg);
+}
+#flexBox div:nth-child(6){
+    width: 100px;
+    height:100px;
+    background-color:rgb(155, 115, 147);
+    align-self: flex-start;
+}
+
