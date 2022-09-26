@@ -38,7 +38,7 @@ function Input(){
             <input value={inputDate} placeholder="날짜를 입력하세요" onChange={(e)=>{setInputDate(e.target.value);}}/> 
             <button onClick={(e)=>{
                 // props.addItem(item); 
-                console.log(item)
+                //console.log(item)
                 e.preventDefault();
                 updateTodo(item);
                 setInputDate(date); 

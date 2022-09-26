@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     RecoilRoot,
     atom,
@@ -30,8 +30,12 @@ function TodoList() {
   //atom 또는 selector값을 리턴, 컴포넌트가 상태를 읽을 수만 있게 하고 싶을 때 자주 사용
   //상태가 업데이트될 때 리렌더링하도록 컴포넌트를 구독
   const todoList= useRecoilValue(filteredTodoListState)
-  //useRecoilValue(todoListState);
+  const list = useRecoilValue(todoListState);
 
+  useEffect(() => {
+    console.log(list);
+  }, []);
+  
   return (
     <>
       <TodoListStatus />

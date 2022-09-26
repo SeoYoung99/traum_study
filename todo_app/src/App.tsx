@@ -41,9 +41,12 @@ function App() : React.ReactElement {
   //   setTodoList(newList)
   // }
 
-  // useEffect(()=>{
-  //   console.log(todoList)  
-  // },[todoList])
+  useEffect(()=>{
+    console.log(reduxTodoList)  
+    return()=>{
+      console.log('뒷정리')
+    }
+  },[])
 
   return (
     <div className="App">
