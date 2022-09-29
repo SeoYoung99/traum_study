@@ -1,10 +1,20 @@
 import React from 'react'
 import App, { AppContext, AppProps } from 'next/app'
 import { Provider } from 'react-redux'
-import configureStore from '../src/store/configureStore'
+import {compose, createStore, Store} from "redux";
+import rootReducer from "../src/store";
 
+// store 생성
+function configureStore() : Store {
+    const composeEnhancers = typeof (window as any) !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const store = createStore(
+        rootReducer,
+        composeEnhancers()
+    );
+    return store;
+}
 // store 설정파일 로드
-const store = configureStore()
+export const store = configureStore()
 
 const TestApp = ({Component, pageProps}: AppProps) => {
     return (
@@ -19,6 +29,5 @@ TestApp.getInitialProps = async (appContext: AppContext) => {
 
     return {...appProps}
 }
-
 
 export default TestApp

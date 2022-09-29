@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import postReducer from "./reducer/reducer";
+import {store} from "../../pages/_app";
 
 const rootReducer = combineReducers({
     postReducer
@@ -7,4 +8,4 @@ const rootReducer = combineReducers({
 
 export default rootReducer
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof store.getState>
