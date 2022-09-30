@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import PostItem from "./postItem";
 import Link from "next/link";
+import {useRouter} from "next/router";
 
 
 const WritePost = () =>{

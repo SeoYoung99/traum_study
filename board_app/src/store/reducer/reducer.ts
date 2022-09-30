@@ -24,11 +24,11 @@ const postReducer = createReducer<postStoreType, postActions>(initialState, {
     }),
     [DELETE_POST_ITEM]: (state, action) =>({
         ...state,
-        postList : [...state.postList.slice(0,action.payload.id),...state.postList.slice(action.payload.id+1)]
+        postList : [...state.postList.slice(0,action.payload.index),...state.postList.slice(action.payload.index+1)]
     }),
     [UPDATE_POST_ITEM]: (state, action) =>({
         ...state,
-        postList : [...state.postList.slice(0,action.payload.id),action.payload.newpost, ...state.postList.slice(action.payload.id+1)]
+        postList : [...state.postList.slice(0,action.payload.index),action.payload.newPost, ...state.postList.slice(action.payload.index+1)]
     }),
     [UPDATE_ID]: (state, action) => ({
         ...state,
