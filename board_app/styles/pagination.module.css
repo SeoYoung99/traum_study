@@ -1,0 +1,15 @@
+.pagination{
+    display: flex;
+    list-style: none;
+    text-align: center;
+    color: dodgerblue;
+    justify-content: center;
+    font-size: large;
+}
+.item{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.item:hover{
+    cursor: pointer;
+}
