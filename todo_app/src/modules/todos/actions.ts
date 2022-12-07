@@ -18,14 +18,9 @@ export const deleteTodo = createAction(DELETE_TODO)<{id: number;}>();
 
 export const deleteTodoThunk = (id: number): ThunkAction<void, RootState, null, Action> => {
     return (dispatch, getState) => {
-        const list = getState().todo.todo 
 
         //id가 해당 번호인 값의 상태가 참이면 삭제 dispatch
-        list.forEach((val)=>{
-            if((val.id === id)&&(val.status === true)){
-                dispatch(deleteTodo({id : id}))
-            }
-        })   
+        dispatch(deleteTodo({id : id}))
     }
 }
 

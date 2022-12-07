@@ -17,7 +17,7 @@ const todo = createReducer<TodoType, TodoAction>(initialState,{
     ,
     [CHANGE_STATUS] : (state, action) => ({
         ...state,
-        todo : state.todo.map((todo) => todo.id === action.payload.id ? {...todo, status: !todo.status}: todo)
+        todo : state.todo.map((todo) => todo.id === action.payload.id ? {...todo, isCompleted: !todo.isCompleted}: todo)
          
     }),
     [DELETE_TODO] : (state, action) => ({

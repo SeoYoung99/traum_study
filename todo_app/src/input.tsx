@@ -5,6 +5,38 @@ import { todoItem } from "./App";
 //리덕스 접근
 import {useDispatch} from 'react-redux';
 import {addTodo} from './modules/todos/actions';
+import styled from "styled-components";
+const InputWrapper =styled.div`
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  margin-bottom: 50px;
+`
+const InputText = styled.input`
+  box-sizing: border-box;
+  height: 100%;
+  width: 400px;
+  border: solid 3px rebeccapurple;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 10px;
+  background-color: #222021;
+  color: white;
+  &:focus{
+    outline: none;
+  }
+`
+const AddButton = styled.button`
+  height: 100%;
+  width: 100px;
+  background: linear-gradient(to right, rebeccapurple, pink);
+  border: none;
+  color: white;
+  font-size: medium;
+  font-weight: bold;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+`
 
 function Input(){
 
@@ -25,30 +57,45 @@ function Input(){
     const [id,setid] = useState(0)
     const [inputText, setInputText] = useState(''); //input text
     const [inputDate, setInputDate] = useState(date);
-    const [item, setItem] = useState<todoItem>({id: id, title: inputText, date: inputDate, status: false}); 
+    const [item, setItem] = useState<todoItem>({id: id, title: inputText, date: inputDate, isCompleted: false});
     
     useEffect(()=>{
-        let inputItem: todoItem = {id: id, title: inputText, date: inputDate, status: false}
+        let inputItem: todoItem = {id: id, title: inputText, date: inputDate, isCompleted: false}
         setItem(inputItem)
+        console.log(inputItem)
     },[inputText, inputDate, id])
 
     return (
         <div>
-            <input value={inputText} placeholder="내용을 입력하세요" onChange={(e)=>{setInputText(e.target.value)}}/> 
-            <input value={inputDate} placeholder="날짜를 입력하세요" onChange={(e)=>{setInputDate(e.target.value);}}/> 
-            <button onClick={(e)=>{
-                // props.addItem(item); 
-                //console.log(item)
-                e.preventDefault();
-                updateTodo(item);
-                setInputDate(date); 
-                setInputText(''); 
-                let newid = id+1; 
-                setid(newid)
+            <InputWrapper><InputText value={inputText} placeholder="내용을 입력하세요" onChange={(e)=>{setInputText(e.target.value)}}/>
+                <AddButton onClick={(e)=>{
+                    // props.addItem(item);
+                    //console.log(item)
+                    e.preventDefault();
+                    updateTodo(item);
+                    setInputDate(date);
+                    setInputText('');
+                    let newid = id+1;
+                    setid(newid)
+                    }
                 }
-            }>
-            +
-            </button>
+                >Add Todo</AddButton>
+            </InputWrapper>
+            {/*<input value={inputText} placeholder="내용을 입력하세요" onChange={(e)=>{setInputText(e.target.value)}}/>*/}
+            {/*<input value={inputDate} placeholder="날짜를 입력하세요" onChange={(e)=>{setInputDate(e.target.value);}}/> */}
+            {/*<button onClick={(e)=>{*/}
+            {/*    // props.addItem(item); */}
+            {/*    //console.log(item)*/}
+            {/*    e.preventDefault();*/}
+            {/*    updateTodo(item);*/}
+            {/*    setInputDate(date); */}
+            {/*    setInputText(''); */}
+            {/*    let newid = id+1; */}
+            {/*    setid(newid)*/}
+            {/*    }*/}
+            {/*}>*/}
+            {/*+*/}
+            {/*</button>*/}
         </div>
     )
 }
