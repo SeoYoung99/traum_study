@@ -1,11 +1,8 @@
 import React from "react";
-import {useState} from 'react'
-import { useDispatch } from "react-redux";
 import { todoItem } from './App'
-import { changeStatus } from "./modules/todos/actions";
 import styled from "styled-components";
 
-const Input = styled.input`
+const TodoItem = styled.div`
   background: none;
   border: none;
   outline: none;
@@ -16,19 +13,12 @@ const Input = styled.input`
   color: white;
   text-decoration: ${({isCompleted}:{isCompleted : boolean})=>(isCompleted? 'line-through':'')};
 `
-function Item({id, title, date, isCompleted} : todoItem) {
+function Item({id, title, isCompleted} : todoItem) {
     return(
-        <div
-            key={id}
-            >
-            <Input value={title} isCompleted={isCompleted}/>
-            {/*<button onClick={()=>*/}
-            {/*    changeItem(id)}>{status? '해제':'완료'*/}
-            {/*    }</button>*/}
-            
-            {id}
-            {title}
-            {date}
+        <div key={id}>
+            <TodoItem isCompleted={isCompleted}>
+                {title}
+            </TodoItem>
         </div>
     )
 }

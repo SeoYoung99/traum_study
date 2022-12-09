@@ -4,7 +4,6 @@ import { ActionType } from "typesafe-actions";
 import * as actions from './actions'
 
 //actions.ts파일에서 정의한 액션들을 온전하게 정의 
-// type TodoAction = PayloadAction<"todo/ADD_TODO", {todo: todoItem;}> | PayloadAction<"todo/DELETE_TODO", {key: number;}> 
 export type TodoAction = ActionType<typeof actions>
 
 //store에서 관리할 state에 대한 type 정의

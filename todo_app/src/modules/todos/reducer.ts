@@ -1,7 +1,5 @@
-//import { todoItem } from "../../App";
-//실질적으로 Action들이 어떤 기능을 하는지 구현
 import { TodoAction, TodoType } from "./types"; //정의한 타입들 불러오기
-import { ADD_TODO, CHANGE_STATUS, DELETE_TODO } from "./actions"; //정의한 액션 타입들도 불러오기
+import {ADD_TODO, CHANGE_STATUS, DELETE_TODO, MODIFY_TODO} from "./actions"; //정의한 액션 타입들도 불러오기
 import { createReducer } from "typesafe-actions"; //기존에 switch/case문을 통해 작성했던 리듀서를 객체형식으로 구현
 
 const initialState : TodoType = {todo : []}
@@ -23,6 +21,10 @@ const todo = createReducer<TodoType, TodoAction>(initialState,{
     [DELETE_TODO] : (state, action) => ({
         ...state,
         todo : state.todo.filter(item => item.id !== action.payload.id)
+    }),
+    [MODIFY_TODO] : (state, action) => ({
+        ...state,
+        todo : state.todo.map((todo) => todo.id === action.payload.todo.id ? {...todo, title: action.payload.todo.title}: todo)
     })
 })
 

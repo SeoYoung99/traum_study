@@ -1,72 +1,70 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import {isVisible} from "@testing-library/user-event/dist/utils";
 import {useAppDispatch} from "../../index";
 import {deleteTodoThunk} from "../todos/actions";
 
 const ModalWrapper = styled.div`
   //중앙 정렬
-  position: fixed;
+  position: absolute;
   top: 0;
-  bottom: 200px;
   left: 0;
-  right: 0;
-  width: 400px;
-  height: 300px;
-  margin: auto;
-  background-color: lightcyan;
-  border-radius: 10%;
+  height: 100%; /*100%*/
+  width: 100%; /*100%*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const Content = styled.div`
-  padding: 40px;
+  box-sizing: border-box;
+  position: fixed;
+  width: 500px;
+  height: 300px;
+  background-image: linear-gradient(to top, #feada6 0%, #f5efef 100%);
+  padding: 100px;
+  text-align: center;
+  border-radius: 50px;
 `
 const ButtonWrapper = styled.div`
-  position: absolute;
-  bottom: 10px;
-  box-sizing: border-box;
-  display: flex ;
+  padding: 40px;
+  display: flex;
   justify-content: space-around;
-  width: 100%;
-  padding: 10% 20%;
 `
 const ConfirmBtn = styled.button`
-  width: 70px;
-  height: 60px;
-  background-color: mediumpurple;
   border: none;
+  border-radius: 10px;
+  width: 70px;
+  height: 50px;
+  cursor: pointer;
+  
+  :hover{
+    box-shadow: 3px 3px 3px lightcoral;
+  }
 `
 
 export interface Props {
     id : number,
-    setIsVisible : (val : boolean) => void
+    setModalVisible : (val : boolean) => void
 }
-const Modal = ({ id, setIsVisible} : Props) => {
+const Modal = ({ id, setModalVisible} : Props) => {
 
     const dispatch = useAppDispatch();
     const onClickConfirm = (id: number) => {
         dispatch(deleteTodoThunk(id))
-        setIsVisible(false)
+        setModalVisible(false)
     }
-    // const onClickConfirm = () => {
-    //     if(window.confirm('삭제하시겠습니까?')){
-    //         alert('ok')
-    //     }else{
-    //         alert('cancel')
-    //     }
-    // }
      return(
             <ModalWrapper>
                 <Content>
                     게시물을 삭제하시겠습니까?
+                    <ButtonWrapper>
+                        <ConfirmBtn onClick={() => setModalVisible(false)}>
+                            취소
+                        </ConfirmBtn>
+                        <ConfirmBtn onClick={() => onClickConfirm(id) }>
+                            확인
+                        </ConfirmBtn>
+                    </ButtonWrapper>
                 </Content>
-                <ButtonWrapper>
-                    <ConfirmBtn onClick={() => setIsVisible(false)}>
-                        취소
-                    </ConfirmBtn>
-                    <ConfirmBtn onClick={() => onClickConfirm(id) }>
-                        확인
-                    </ConfirmBtn>
-                </ButtonWrapper>
             </ModalWrapper>
      )
 }
