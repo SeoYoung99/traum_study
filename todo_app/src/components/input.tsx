@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { useState } from 'react';
-import { todoItem } from "./App";
+import { todoItem } from "../App";
 
 //리덕스 접근
 import {useDispatch} from 'react-redux';
-import {addTodo} from './modules/todos/actions';
+import {addTodo} from '../store/todos/actions';
 import styled from "styled-components";
 export const InputWrapper =styled.div`
   display: flex;
   justify-content: center;
   height: 50px;
   margin-bottom: 50px;
-  visibility: ${({mode} : {mode:boolean}) => mode? 'hidden':''} ;
+  
 `
 const InputText = styled.input`
   box-sizing: border-box;
@@ -42,46 +42,40 @@ const AddButton = styled.button`
     border: none;
   }
 `
-interface mode {
-    mode: boolean
-}
-function Input({mode}: mode){
+
+function Input(){
 
     //리덕스 스토어에 설정된 action에 대한 dispatch를 연결하는 Hook
     const dispatch = useDispatch();
 
     const updateTodo = React.useCallback(
-        
         (todo: todoItem) => dispatch(addTodo({todo: todo})),[dispatch]
-        //action을 감지할 때만 함수 생성, 
-        //addTodo액션을 감지해서 실행
     )
     
     let today = new Date();
     let TodayDate = today.toLocaleDateString();
     let date = TodayDate;
    
-    const [id,setid] = useState(0)
+    const [id,setId] = useState(0)
     const [inputText, setInputText] = useState(''); //input text
     const [inputDate, setInputDate] = useState(date);
     const [item, setItem] = useState<todoItem>({id: id, title: inputText, date: inputDate, isCompleted: false});
     
-    useEffect(()=>{
+    useEffect(()=> {
         let inputItem: todoItem = {id: id, title: inputText, date: inputDate, isCompleted: false}
         setItem(inputItem)
-        console.log(inputItem)
     },[inputText, inputDate, id])
 
     return (
-        <InputWrapper mode={mode}>
+        <InputWrapper>
             <InputText value={inputText} placeholder="내용을 입력하세요" onChange={(e)=>{setInputText(e.target.value)}}/>
-            <AddButton onClick={(e)=>{
+            <AddButton onClick={(e)=> {
                 e.preventDefault();
                 updateTodo(item);
                 setInputDate(date);
                 setInputText('');
-                let newid = id+1;
-                setid(newid)
+                let newId = id+1;
+                setId(newId)
                 }
             }
             >Add Todo

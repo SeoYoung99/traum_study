@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {useAppDispatch} from "../../index";
-import {deleteTodoThunk} from "../todos/actions";
+import {deleteTodoThunk} from "../../store/todos/actions";
 
 const ModalWrapper = styled.div`
   //중앙 정렬
@@ -40,7 +40,6 @@ const ConfirmBtn = styled.button`
     box-shadow: 3px 3px 3px lightcoral;
   }
 `
-
 export interface Props {
     id : number,
     setModalVisible : (val : boolean) => void
@@ -48,6 +47,7 @@ export interface Props {
 const Modal = ({ id, setModalVisible} : Props) => {
 
     const dispatch = useAppDispatch();
+
     const onClickConfirm = (id: number) => {
         dispatch(deleteTodoThunk(id))
         setModalVisible(false)
