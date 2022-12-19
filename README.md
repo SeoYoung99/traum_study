@@ -100,3 +100,18 @@ package.json 스크립트 수정
 
 live server : $ npm start
 build : $ npm run build
+
+<br/>
+
+# TODO-APP
+
+- 할일 추가, 수정, 삭제 기능
+- 항목 완료 시, 체크박스 토글 및 토스트 알림
+- 항목 삭제 시, 확인 모달 창 팝업
+- React, TypeScript, styled-components사용, Redux상태관리
+
+<img width="493" alt="스크린샷 2022-12-12 오후 5 25 59" src="https://user-images.githubusercontent.com/76687318/206996891-e33208b2-7afc-4f16-a693-7dd0a8e279d3.png">
+<img width="300" alt="스크린샷 2022-12-12 오후 5 28 45" src="https://user-images.githubusercontent.com/76687318/206997573-a347b4fa-5e50-4997-a96e-318ad534abe6.png">
+<img width="424" alt="스크린샷 2022-12-12 오전 10 50 19" src="https://user-images.githubusercontent.com/76687318/206997725-84a66148-7655-40a2-a6af-56e05160b136.png">
+
+
