@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useCallback} from "react";
 import styled from "styled-components";
 import {useAppDispatch} from "../../index";
 import {deleteTodoThunk} from "../../store/todos/actions";
+import {removeModal} from "../../store/modal/modalaction";
 
 const ModalWrapper = styled.div`
   //중앙 정렬
@@ -14,6 +15,15 @@ const ModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `
+const DimWrapper = styled.div`
+  //중앙 정렬
+  height: 100%; /*100%*/
+  width: 100%; /*100%*/
+  display: flex;
+  z-index: 1;
+  background-color: white;
+  opacity: 30%;
+`
 const Content = styled.div`
   box-sizing: border-box;
   position: fixed;
@@ -23,6 +33,7 @@ const Content = styled.div`
   padding: 100px;
   text-align: center;
   border-radius: 50px;
+  z-index: 2;
 `
 const ButtonWrapper = styled.div`
   padding: 40px;
@@ -41,26 +52,37 @@ const ConfirmBtn = styled.button`
   }
 `
 export interface Props {
-    id : number,
-    setModalVisible : (val : boolean) => void
+    id? : number,
+    props : { text : string }
 }
-const Modal = ({ id, setModalVisible} : Props) => {
+const Modal = ({ id, props } : Props) => {
 
     const dispatch = useAppDispatch();
 
-    const onClickConfirm = (id: number) => {
-        dispatch(deleteTodoThunk(id))
-        setModalVisible(false)
-    }
+    const onCancelClick = useCallback(() => {
+        dispatch(removeModal())
+    },[dispatch])
+
+    const onConfirmClick = useCallback(() => {
+        if (id != null) {
+            dispatch(deleteTodoThunk(id))
+        }
+        dispatch(removeModal())
+    },[dispatch, id])
+
      return(
             <ModalWrapper>
-                <Content>
-                    게시물을 삭제하시겠습니까?
+                <DimWrapper onClick={()=>alert('click')}/>
+                <Content >
+                    {props.text}
                     <ButtonWrapper>
-                        <ConfirmBtn onClick={() => setModalVisible(false)}>
-                            취소
-                        </ConfirmBtn>
-                        <ConfirmBtn onClick={() => onClickConfirm(id) }>
+                        {id == null?
+                            <></> //id가 없으면 No Input Modal
+                            :
+                            <ConfirmBtn onClick={onCancelClick}>
+                                취소
+                            </ConfirmBtn> }
+                        <ConfirmBtn onClick={onConfirmClick}>
                             확인
                         </ConfirmBtn>
                     </ButtonWrapper>

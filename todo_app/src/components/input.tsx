@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import React, {useCallback, useRef} from "react";
 import { useState } from 'react';
-import { todoItem } from "../App";
-
-//리덕스 접근
 import {useDispatch} from 'react-redux';
 import {addTodo} from '../store/todos/actions';
 import styled from "styled-components";
+import {todoItem} from "../store/todos/reducer";
+import {addNoInputModal} from "../store/modal/modalaction";
+
 export const InputWrapper =styled.div`
   display: flex;
   justify-content: center;
   height: 50px;
   margin-bottom: 50px;
-  
 `
 const InputText = styled.input`
   box-sizing: border-box;
@@ -41,43 +40,56 @@ const AddButton = styled.button`
   :focus{
     border: none;
   }
+  :disabled{
+    opacity: 0.5;
+  }
 `
 
-function Input(){
+const Input = () => {
 
-    //리덕스 스토어에 설정된 action에 대한 dispatch를 연결하는 Hook
     const dispatch = useDispatch();
 
-    const updateTodo = React.useCallback(
-        (todo: todoItem) => dispatch(addTodo({todo: todo})),[dispatch]
-    )
-    
-    let today = new Date();
-    let TodayDate = today.toLocaleDateString();
-    let date = TodayDate;
-   
+    const today = new Date(); //현재 날짜
+    const date = today.toLocaleDateString();
+
     const [id,setId] = useState(0)
     const [inputText, setInputText] = useState(''); //input text
     const [inputDate, setInputDate] = useState(date);
-    const [item, setItem] = useState<todoItem>({id: id, title: inputText, date: inputDate, isCompleted: false});
-    
-    useEffect(()=> {
-        let inputItem: todoItem = {id: id, title: inputText, date: inputDate, isCompleted: false}
-        setItem(inputItem)
-    },[inputText, inputDate, id])
+
+    const ref = useRef<HTMLInputElement>(null)
+    const onAddClick = useCallback(() => {
+        if(inputText === ''){
+            dispatch(addNoInputModal(
+                {
+                    key: 'noInput',
+                    props: {text: '내용이 없습니다!'
+                    }}))
+        }
+        else{
+            const item : todoItem = {id: id, title: inputText, date: inputDate, isCompleted: false}
+            //새로운 아이템 추가 액션 생성
+            dispatch(addTodo({todo : item}))
+            //아이템 다시 초기화, id는 1증가
+            setInputDate(date);
+            setInputText('');
+            const newId = id+1;
+            setId(newId)
+        }
+        if(ref.current){ //새로운 아이템 추가 시 addTodo Input 창에 포커스
+            ref.current.focus()
+        }
+    },[date, dispatch, id, inputDate, inputText])
 
     return (
         <InputWrapper>
-            <InputText value={inputText} placeholder="내용을 입력하세요" onChange={(e)=>{setInputText(e.target.value)}}/>
-            <AddButton onClick={(e)=> {
-                e.preventDefault();
-                updateTodo(item);
-                setInputDate(date);
-                setInputText('');
-                let newId = id+1;
-                setId(newId)
-                }
-            }
+            <InputText
+                value={inputText}
+                placeholder="내용을 입력하세요"
+                autoFocus={true}
+                ref={ref}
+                onChange={(e) => {setInputText(e.target.value)}}
+            />
+            <AddButton onClick={onAddClick}
             >Add Todo
             </AddButton>
         </InputWrapper>

@@ -1,16 +1,16 @@
 //리덕스 적용!!!
-//action.ts, reducer.ts, types.ts를 묶어야함
-
 import {combineReducers} from 'redux';
-import todo from './todos/reducer';
-import { TodoType } from './todos/types';
+import todo, {TodoType} from './todos/reducer';
+import modal, {ModalType} from "./modal/modalreducer";
 
 export type RootState = {
   todo: TodoType;
+  modal: ModalType
 }
 
 const rootReducer = combineReducers({
   todo,
+  modal
 })
 
 export default rootReducer;

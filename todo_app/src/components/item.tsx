@@ -1,12 +1,17 @@
-import React, {useState} from "react";
-import {Style, todoItem} from '../App'
+import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {toast} from "react-toastify";
 import {useAppDispatch} from "../index";
-import {changeStatus, modifyTodo} from "../store/todos/actions";
-import Modal from "./Modal/modal";
-import ModalContainer from "./Modal/ModalContainer";
+import {changeStatusThunk, modifyTodo} from "../store/todos/actions";
+import { todoItem } from "../store/todos/reducer";
+import {addDeleteModal} from "../store/modal/modalaction";
 
+enum Style {
+    NEAR_MOON = 'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
+    TRUE_SUNSET = 'linear-gradient(90deg, #fa709a 0%, #fee140 100%)',
+    TEMPTING_AZURE = 'linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%);',
+    TEEN_NOTEBOOK = 'linear-gradient(90deg, #9795f0 0%, #fbc8d4 100%)',
+}
 const TodoItemWrapper = styled.div`
   display: grid;
   width: 500px;
@@ -18,10 +23,10 @@ const TodoItemWrapper = styled.div`
  
   background-image: ${({index}:{index : number})=> {
     switch (index % 4){
-        case 0 : return Style.near_moon
-        case 1 : return Style.true_sunset
-        case 2 : return Style.tempting_azure
-        case 3 : return Style.teen_notebook
+        case 0 : return Style.NEAR_MOON
+        case 1 : return Style.TRUE_SUNSET
+        case 2 : return Style.TEMPTING_AZURE
+        case 3 : return Style.TEEN_NOTEBOOK
     }
 }} ;
   border-radius: 5px;
@@ -89,84 +94,95 @@ const TodoInput = styled.input`
   overflow-wrap: break-word;
   color: white;
 `
-
 interface Props {
     todoItem: todoItem,
     index: number,
 }
-function Item({ todoItem, index } : Props) {
+//기억해 여기서 받아오는 건 단일 객체야 제발....
+const Item = ({ todoItem, index } : Props) => {
     const trash = require('../icons/trash.png')
     const modify = require('../icons/pencil.png')
     const store = require('../icons/-.png')
+
     const dispatch = useAppDispatch();
 
-    const [deleteItem, setDeleteItem] = useState(-1)
-    const [modalVisible, setModalVisible] = useState(false)
-    const [modifyItem, setModifyItem] = useState<todoItem>({id :-1, title : '', date : '', isCompleted: false})
-    const { id, title, date, isCompleted } = todoItem
+    const [modifyMode, setModifyMode] = useState(false)
+    const [updateText, setUpdateText] = useState(todoItem.title)
 
-    const [updateText, setUpdateText] = useState(title)
+    //ref객체 만들고
+    const ref = useRef<HTMLDivElement>(null)
 
-    const changeItem = React.useCallback(
-        (id: number)=> dispatch(changeStatus({id})),[dispatch]
-    )
-
-    const notify = React.useCallback((isCompleted : boolean) => {
-        isCompleted? toast("still",{
+    const onFinishClick = React.useCallback(() => {
+        dispatch(changeStatusThunk(todoItem))
+        //toast message
+        todoItem.isCompleted? toast("still",{
             autoClose: 2000,
         }) : toast("Finished",{
             autoClose: 2000,
         })
-    },[])
+    },[dispatch, todoItem])
 
-    const onFinishClick = React.useCallback((val: todoItem) => {
-        changeItem(val.id)
-        notify(val.isCompleted)
-    },[changeItem, notify])
-
-    const onDeleteClick = React.useCallback((id: number) => {
-        setDeleteItem(id)
-        setModalVisible(true)
-    },[])
-
-    const onModifyClick = React.useCallback((val: todoItem) => {
-        setModifyItem(val)
-    },[setModifyItem])
+    const onModifyClick = React.useCallback(() => {
+        setModifyMode(true)
+    },[todoItem.id])
 
     const onUpdateClick = React.useCallback(() => {
-        const newItem : todoItem = {id: id, title: updateText, date: date, isCompleted: isCompleted}
+        setModifyMode(false)
+        const newItem : todoItem = {id: todoItem.id, title: updateText, date: todoItem.date, isCompleted: todoItem.isCompleted}
         dispatch(modifyTodo({todo : newItem}))
-    },[dispatch, date, id, isCompleted, updateText])
+    },[dispatch, todoItem.date, todoItem.id, todoItem.isCompleted, updateText])
+
+    const onDeleteClick = React.useCallback(() => {
+        dispatch(addDeleteModal(
+            {
+                key: "delete",
+                id: todoItem.id,
+                props:{ text: '삭제하시겠습니까?'
+                }}))
+    },[dispatch, todoItem.id])
+
+    useEffect(() => {
+        const handleClickOutside = (e:MouseEvent) => {
+            //선택된 DOM요소가 있고, 해당 ref 가 이벤트 DOM을 포함하지 않으면
+            if(ref.current && !ref.current.contains(e.target as Node)){
+                //해당 아이템 수정 취소
+                setModifyMode(false)
+            }
+        }
+        //모든 마우스 down 에 핸들러함수 할당
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            //뒷처리 함수로 이벤트 리스너 지워주기
+            document.removeEventListener('mousedown', handleClickOutside)
+            }
+        }, [ref])
 
     return(
-        <>
-            <TodoItemWrapper index={index}>
-                {(todoItem !== modifyItem)? <FinishBtn onClick={()=> onFinishClick(todoItem)} isCompleted={isCompleted}/> : <Box/> }
+        <>  {/*만든 ref객체를 선택하고 싶은 DOM에 ref 값으로 설정*/}
+            <TodoItemWrapper index={index} ref={ref}>
+                {modifyMode? <Box/> : <FinishBtn onClick={onFinishClick} isCompleted={todoItem.isCompleted}/>}
                 <Text>
-                    {(todoItem !== modifyItem)?
-                        <TodoItem isCompleted={isCompleted}>
-                            {title}
-                        </TodoItem>
+                    {modifyMode?
+                        <TodoInput value={updateText} onChange={(event)=> setUpdateText(event.target.value)} autoFocus={true}/>
                         :
-                        <TodoInput autoFocus={true} value={updateText} onChange={(event)=> setUpdateText(event.target.value)}/>
+                        <TodoItem isCompleted={todoItem.isCompleted}>
+                            {todoItem.title}
+                        </TodoItem>
                     }
                 </Text>
-                <DeleteBtn onClick={()=> onDeleteClick(id)}>
-                    <img src={trash} alt='delete' style={{width: '20px'}}/>
-                </DeleteBtn>
-                {(todoItem !== modifyItem)?
-                    <ModifyBtn onClick={()=> onModifyClick(todoItem)}>
-                        <img src={modify} alt='modify' style={{width: '19px'}}/>
-                    </ModifyBtn>
-                    :
+                {modifyMode?
                     <StoreBtn onClick={onUpdateClick}>
                         <img src={store} alt='modify' style={{width: '20px'}}/>
                     </StoreBtn>
+                    :
+                    <ModifyBtn onClick={onModifyClick}>
+                        <img src={modify} alt='modify' style={{width: '19px'}}/>
+                    </ModifyBtn>
                 }
+                <DeleteBtn onClick={onDeleteClick}>
+                    <img src={trash} alt='delete' style={{width: '20px'}}/>
+                </DeleteBtn>
             </TodoItemWrapper>
-            <ModalContainer>
-                {modalVisible && <Modal id={deleteItem} setModalVisible={setModalVisible}/>}
-            </ModalContainer>
         </>
     )
 }

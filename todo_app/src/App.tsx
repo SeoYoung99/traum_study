@@ -7,19 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from 'react-redux';
 import { RootState } from './store';
 import styled from "styled-components";
+import ModalContainer from "./components/Modal/ModalContainer";
 
-export enum Style {
-  near_moon = 'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
-  true_sunset = 'linear-gradient(90deg, #fa709a 0%, #fee140 100%)',
-  tempting_azure = 'linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%);',
-  teen_notebook = 'linear-gradient(90deg, #9795f0 0%, #fbc8d4 100%)',
-}
-export type todoItem = {
-  id : number;
-  title : string ;
-  date : number | string ;
-  isCompleted: boolean ;
-}
 const Wrapper = styled.div`
   background-color: #222021;
 `
@@ -30,18 +19,20 @@ const Title = styled.h1`
   margin: 0;
   padding: 30px;
 `
-function App() : React.ReactElement {
-
-  const todoList = useSelector((state: RootState) => state.todo.todo)
+const App = () : React.ReactElement => {
+    //useSelector는 가져오는 상태값이 변경될 때만 렌더링
+    const list = useSelector((state: RootState) => {
+      const { todo } = state
+      return Array.from(todo.todo.values())
+  })
 
   return (
     <Wrapper>
       <Title> Todo </Title>
       <ToastContainer />
       <Input />
-        {todoList.map((val: todoItem, index)=>
-            <Item key={val.id} todoItem={val} index={index}/>
-        )}
+      {list.map(  (value, index) => <Item todoItem={value} index={index} key={index}/>   )}
+      <ModalContainer/>
     </Wrapper>
   );
 }
