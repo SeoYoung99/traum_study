@@ -3,8 +3,9 @@ import styled from "styled-components";
 import {toast} from "react-toastify";
 import {useAppDispatch} from "../index";
 import {changeStatusThunk, modifyTodo} from "../store/todos/actions";
-import { todoItem } from "../store/todos/reducer";
+import todo, { todoItem } from "../store/todos/reducer";
 import {addDeleteModal} from "../store/modal/modalaction";
+import update = toast.update;
 
 enum Style {
     NEAR_MOON = 'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
@@ -108,6 +109,9 @@ const Item = ({ todoItem, index } : Props) => {
 
     const [modifyMode, setModifyMode] = useState(false)
     const [updateText, setUpdateText] = useState(todoItem.title)
+    useEffect(()=>{  //useState 때문에 계속 업데이트해줘야함
+        setUpdateText(todoItem.title)
+    },[todoItem])
 
     //ref객체 만들고
     const ref = useRef<HTMLDivElement>(null)
@@ -124,7 +128,7 @@ const Item = ({ todoItem, index } : Props) => {
 
     const onModifyClick = React.useCallback(() => {
         setModifyMode(true)
-    },[todoItem.id])
+    },[])
 
     const onUpdateClick = React.useCallback(() => {
         setModifyMode(false)

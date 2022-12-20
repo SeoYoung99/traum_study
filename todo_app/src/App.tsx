@@ -32,7 +32,7 @@ const App = () : React.ReactElement => {
       <ToastContainer />
       <Input />
       {list.map(  (value, index) => <Item todoItem={value} index={index} key={index}/>   )}
-      <ModalContainer/>
+    <ModalContainer/>
     </Wrapper>
   );
 }

@@ -58,30 +58,31 @@ export interface Props {
 const Modal = ({ id, props } : Props) => {
 
     const dispatch = useAppDispatch();
+    const deleteModal = id != null
 
     const onCancelClick = useCallback(() => {
         dispatch(removeModal())
     },[dispatch])
 
     const onConfirmClick = useCallback(() => {
-        if (id != null) {
+        if (deleteModal) {
             dispatch(deleteTodoThunk(id))
         }
         dispatch(removeModal())
-    },[dispatch, id])
+    },[deleteModal, dispatch, id])
 
      return(
             <ModalWrapper>
-                <DimWrapper onClick={()=>alert('click')}/>
+                <DimWrapper/>
                 <Content >
                     {props.text}
                     <ButtonWrapper>
-                        {id == null?
-                            <></> //id가 없으면 No Input Modal
-                            :
+                        {deleteModal?
                             <ConfirmBtn onClick={onCancelClick}>
                                 취소
-                            </ConfirmBtn> }
+                            </ConfirmBtn>
+                            :
+                            <></> }
                         <ConfirmBtn onClick={onConfirmClick}>
                             확인
                         </ConfirmBtn>

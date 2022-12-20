@@ -40,7 +40,6 @@ const initialState : TodoType = { todo: map }
 //
 // export default todo;
 
- //export function createReducer<TodoType, PayloadAction<"ADD_TODO", {todo: todoItem;}> | PayloadAction<"CHANGE_STATUS", {todo: todoItem;}> | PayloadAction<...> | PayloadAction<...>>
 const todo = createReducer<TodoType, TodoAction>(initialState,{
     ADD_TODO : (state, action) => ({
         ...state,
@@ -52,6 +51,7 @@ const todo = createReducer<TodoType, TodoAction>(initialState,{
     }),
     DELETE_TODO : (state, action) => {
         state.todo.delete(action.payload.id)
+        console.log(state.todo)
         return({...state})
     },
     MODIFY_TODO : (state, action) => ({

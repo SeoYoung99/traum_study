@@ -11,7 +11,7 @@ const ModalContainer: React.FC = () => {
 
     return createPortal(
         modals.map((modal) => {
-            if(isDeleteItem(modal)) {
+            if(isDeleteItem(modal)) { //DeleteModal 타입일 떄
                 return <Modal key={modal.key} id={modal.id} props={modal.props}/>
             }
             if(isBasic(modal)){

@@ -56,7 +56,6 @@ const Input = () => {
     const [inputText, setInputText] = useState(''); //input text
     const [inputDate, setInputDate] = useState(date);
 
-    const ref = useRef<HTMLInputElement>(null)
     const onAddClick = useCallback(() => {
         if(inputText === ''){
             dispatch(addNoInputModal(
@@ -75,10 +74,13 @@ const Input = () => {
             const newId = id+1;
             setId(newId)
         }
-        if(ref.current){ //새로운 아이템 추가 시 addTodo Input 창에 포커스
-            ref.current.focus()
-        }
     },[date, dispatch, id, inputDate, inputText])
+
+    const ref = useRef<HTMLInputElement>(null)
+
+    if(ref.current){ //addTodo Input 창에 포커스
+        ref.current.focus()
+    }
 
     return (
         <InputWrapper>
